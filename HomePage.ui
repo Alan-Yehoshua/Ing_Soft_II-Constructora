@@ -584,11 +584,6 @@ QLineEdit{
          <property name="sortingEnabled">
           <bool>true</bool>
          </property>
-         <row>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>Nombre</string>
@@ -614,31 +609,6 @@ QLineEdit{
            <string>Direccion</string>
           </property>
          </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string>XXX</string>
-          </property>
-         </item>
-         <item row="0" column="1">
-          <property name="text">
-           <string>AAA</string>
-          </property>
-         </item>
-         <item row="0" column="2">
-          <property name="text">
-           <string>WWW</string>
-          </property>
-         </item>
-         <item row="0" column="3">
-          <property name="text">
-           <string>3331965666</string>
-          </property>
-         </item>
-         <item row="0" column="4">
-          <property name="text">
-           <string>Casa</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>
@@ -921,11 +891,6 @@ QLineEdit{
          <property name="sortingEnabled">
           <bool>true</bool>
          </property>
-         <row>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>Nombre</string>
@@ -966,46 +931,6 @@ QLineEdit{
            <string>Obra</string>
           </property>
          </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string>XXX</string>
-          </property>
-         </item>
-         <item row="0" column="1">
-          <property name="text">
-           <string>AAA</string>
-          </property>
-         </item>
-         <item row="0" column="2">
-          <property name="text">
-           <string>WWW</string>
-          </property>
-         </item>
-         <item row="0" column="3">
-          <property name="text">
-           <string>XXX@AAA</string>
-          </property>
-         </item>
-         <item row="0" column="4">
-          <property name="text">
-           <string>EMPLEADO</string>
-          </property>
-         </item>
-         <item row="0" column="5">
-          <property name="text">
-           <string>XXXXXX</string>
-          </property>
-         </item>
-         <item row="0" column="6">
-          <property name="text">
-           <string>QWERTY</string>
-          </property>
-         </item>
-         <item row="0" column="7">
-          <property name="text">
-           <string>Casa</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>
