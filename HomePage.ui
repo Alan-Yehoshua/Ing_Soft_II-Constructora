@@ -118,6 +118,9 @@ QLineEdit{
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Clientes</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">#CustomerButton {
     border: 1px solid black;
@@ -155,6 +158,9 @@ QLineEdit{
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Empleados</string>
        </property>
        <property name="styleSheet">
         <string notr="true">#EmployeButton {
@@ -200,6 +206,9 @@ QLineEdit{
          <height>64</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Provedores</string>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>Icon/businessman-32.ico</normaloff>Icon/businessman-32.ico</iconset>
@@ -231,6 +240,9 @@ QLineEdit{
          <width>64</width>
          <height>64</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Obras</string>
        </property>
        <property name="icon">
         <iconset>
@@ -264,6 +276,9 @@ QLineEdit{
          <height>64</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Materiales</string>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>Icon/month-view-32.ico</normaloff>Icon/month-view-32.ico</iconset>
@@ -296,6 +311,9 @@ QLineEdit{
          <height>64</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Citas</string>
+       </property>
        <property name="icon">
         <iconset>
          <normaloff>Icon/date-to-32.ico</normaloff>Icon/date-to-32.ico</iconset>
@@ -327,6 +345,9 @@ QLineEdit{
          <width>64</width>
          <height>64</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Pedidos</string>
        </property>
        <property name="icon">
         <iconset>
@@ -786,7 +807,7 @@ QLineEdit{
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QPushButton" name="UpdateEmploye">
            <property name="font">
             <font>
@@ -801,7 +822,7 @@ QLineEdit{
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="QPushButton" name="AddEmploye">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -822,7 +843,7 @@ QLineEdit{
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <widget class="QPushButton" name="DeleteEmploye">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -842,6 +863,16 @@ QLineEdit{
             <string>Eliminar</string>
            </property>
           </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="BuildingLabel">
+           <property name="text">
+            <string>Obra</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QComboBox" name="Building"/>
          </item>
         </layout>
        </item>
