@@ -11,36 +11,48 @@ class HomeWindow(QMainWindow):
 
         self.CustomerButton.clicked.connect(self.customerPage)
         self.EmployeButton.clicked.connect(self.employePage)
+        self.BuildingButton.clicked.connect(self.buildingPage)
 
-        # Inicializa la conexión a Supabase
-        self.supabase: Client = create_client("https://qlsmhahdkovvqfauntde.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsc21oYWhka292dnFmYXVudGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjYwNjcxMjIsImV4cCI6MjA0MTY0MzEyMn0.K-LSXODTvSbvFqu6hnJWYiP8KDmm959LZB5xYQl6aPI")
-        self.loadCustomerData()
-        self.TableCustomer.cellClicked.connect(self.cellsToInputs)
+        #CONEXION A LA BASE DE DATOS Y CARGA DE DATOS---------------------------
+        self.supabase: Client = create_client("https://hgpzmxwqwscqoaaqplrj.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhncHpteHdxd3NjcW9hYXFwbHJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY0NTE4MjUsImV4cCI6MjA0MjAyNzgyNX0.C7bldU67QGAUlQTcOCMbL-MDu-IOthH-0RlUN8LATaA")
+        self.LoadData('cliente', self.TableCustomer) #(NOMBRE DE LA TABLA EN DB, QTableWidget donde se pondran los datos)
+        self.LoadData('empleado', self.TableEmploye)
+        self.LoadData('obra', self.TableBuilding)
+        #-----------------------------------------------------------------------
         
+        self.TableCustomer.cellClicked.connect(self.cellsToInputsCustomer)
+        
+    #FUNCIONES PARA MOVERNOS ENTRE PAGINAS--------------------------------------
     def customerPage(self):
         self.stackedWidget.setCurrentIndex(0)
-        self.loadCustomerData()
 
     def employePage(self):
         self.stackedWidget.setCurrentIndex(1)
         
-    def cellsToInputs(self, fila, columna):
-        # Obtener los datos de la fila seleccionada y transferirlos a los QLineEdit
+    def buildingPage(self):
+        self.stackedWidget.setCurrentIndex(2)
+
+    #---------------------------------------------------------------------------
+    
+    #FUNCION PARA MANDAR DATOS DE LAS FILAS A LOS INPUTS (SOLO PARA CLIENTES TEMP)
+    def cellsToInputsCustomer(self, fila, columna):
         self.NameCustomer.setText(self.TableCustomer.item(fila, 1).text())
         self.LastNamePaCustomer.setText(self.TableCustomer.item(fila, 2).text())
         self.AddressCustomer.setText(self.TableCustomer.item(fila, 3).text())
         self.NumberCustomer.setText(self.TableCustomer.item(fila, 4).text())
-        
-    def loadCustomerData(self):
+    #---------------------------------------------------------------------------
+    
+    #FUNCION PARA CARGAR LOS DATOS
+    def LoadData(self, tableNameDB, tableName):
         # Obtiene los datos de la tabla de clientes
-        response = self.supabase.table("cliente").select("*").execute()
-
+        response = self.supabase.table(tableNameDB).select("*").execute()
         # Asumiendo que tienes una QTableWidget llamada customerTable
-        self.TableCustomer.setRowCount(0)
+        tableName.setRowCount(0)
         for row, data in enumerate(response.data):
-            self.TableCustomer.insertRow(row)
+            tableName.insertRow(row)
             for col, (key, value) in enumerate(data.items()):
-                self.TableCustomer.setItem(row, col, QTableWidgetItem(str(value)))
+                tableName.setItem(row, col, QTableWidgetItem(str(value)))
+    #---------------------------------------------------------------------------
 
 
 if __name__ == "__main__":
