@@ -1,49 +1,72 @@
 from PyQt5.QtWidgets import QMainWindow, QTableWidget, QTableWidgetItem, QLineEdit, QComboBox, QPushButton
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtCore import Qt
-from ui_mainwindow import Ui_MainWindow
+from PyQt5.uic import loadUi
 from supabase import create_client, Client
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        loadUi("HomePage.ui", self)
         
         # Inicializa la conexión a Supabase  BASE DE DATOS DE VICTOR
         self.supabase: Client = create_client("https://qlsmhahdkovvqfauntde.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsc21oYWhka292dnFmYXVudGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjYwNjcxMjIsImV4cCI6MjA0MTY0MzEyMn0.K-LSXODTvSbvFqu6hnJWYiP8KDmm959LZB5xYQl6aPI")
-        self.loadData(self.ui.customerTable)
+        self.loadData(self.customerTable)
+        self.loadData(self.employeeTable)
+        self.loadData(self.buildingTable)
+        self.loadData(self.suplierTable)
+        self.loadData(self.materialTable)
         
         # Se establece la columna "ID" de los empleados como oculta
-        self.ui.employeeTable.setColumnHidden(0, True)
+        self.employeeTable.setColumnHidden(0, True)
+        self.customerTable.setColumnHidden(0, True)
+        self.buildingTable.setColumnHidden(0, True)
+        self.suplierTable.setColumnHidden(0,True)
+        self.materialTable.setColumnHidden(0,True)
         
         # Configuración de los indices
-        for val, btn in enumerate([self.ui.customerButton, self.ui.employeeButton, self.ui.supplierButton,
-                                   self.ui.buildingButton, self.ui.materialButton, self.ui.dateButton, self.ui.requestButton]):
+        for val, btn in enumerate([self.customerButton, self.employeeButton, self.supplierButton,
+                                   self.buildingButton, self.materialButton, self.dateButton, self.requestButton]):
             btn.toggled.connect(lambda checked, btn=val: self.changeWindow(btn) if checked else None)
             
-        self.ui.customerTable.currentCellChanged.connect(self.setDataOnWidgets)
-        self.ui.employeeTable.currentCellChanged.connect(self.setDataOnWidgets)
-        
-        self.ui.addCustomer.clicked.connect(self.addData)
-        self.ui.addEmployee.clicked.connect(self.addData)
-        
-        self.ui.updateCustomer.clicked.connect(self.modifyData)
-        self.ui.updateEmployee.clicked.connect(self.modifyData)
-        
-        self.ui.deleteCustomer.clicked.connect(self.deleteData)
-        self.ui.deleteEmployee.clicked.connect(self.deleteData)
+        self.customerTable.currentCellChanged.connect(self.setDataOnWidgets)
+        self.employeeTable.currentCellChanged.connect(self.setDataOnWidgets)
+        self.buildingTable.currentCellChanged.connect(self.setDataOnWidgets)
+        self.suplierTable.currentCellChanged.connect(self.setDataOnWidgets)
+        self.materialTable.currentCellChanged.connect(self.setDataOnWidgets)
+
+        self.addCustomer.clicked.connect(self.addData)
+        self.addEmployee.clicked.connect(self.addData)
+        self.addSuplier.clicked.connect(self.addData)
+        self.addMaterial.clicked.connect(self.addData)
+        self.addBuilding.clicked.connect(self.addData)
+
+        self.updateCustomer.clicked.connect(self.modifyData)
+        self.updateEmployee.clicked.connect(self.modifyData)
+        self.updateSuplier.clicked.connect(self.modifyData)
+        self.updateMaterial.clicked.connect(self.modifyData)
+        self.updateBuilding.clicked.connect(self.modifyData)
+
+        self.deleteCustomer.clicked.connect(self.deleteData)
+        self.deleteEmployee.clicked.connect(self.deleteData)
+        self.deleteSuplier.clicked.connect(self.deleteData)
+        self.deleteMaterial.clicked.connect(self.deleteData)
+        self.deleteBuilding.clicked.connect(self.deleteData)
+
         
     def changeWindow(self, index: int):
-        self.ui.stackedWidget.setCurrentIndex(index)
+        self.stackedWidget.setCurrentIndex(index)
         
         indexDict = {
-            0: self.ui.customerTable,
-            1: self.ui.employeeTable
+            0: self.customerTable,
+            1: self.employeeTable,
+            2: self.suplierTable,
+            3: self.materialTable,
+            4: self.buildingTable
         }
+
         
-        # Bloqueo tempral debido a la cantidad de paginas en self.ui.stackedWidget
+        # Bloqueo tempral debido a la cantidad de paginas en self.stackedWidget
         if index > 1:
             index = 1
         
@@ -51,7 +74,7 @@ class MainWindow(QMainWindow):
         self.loadData(indexDict[index])
         
         # Limpia la seleccion de las demás tablas
-        for idx, table in enumerate([self.ui.customerTable, self.ui.employeeTable]):
+        for idx, table in enumerate([self.customerTable, self.employeeTable]):
             if idx == index: # Si los indices coinciden, se salta la iteración
                 continue
             
@@ -62,8 +85,11 @@ class MainWindow(QMainWindow):
         # Diccionario que almacena la tabla a consultar con supabase
         # Se compara la tabla de la interfaz para elegir la tabla de Supabase
         sqlTable = {
-            self.ui.customerTable: "cliente",
-            self.ui.employeeTable: "empleados"
+            self.customerTable: "cliente",
+            self.employeeTable: "empleados",
+            self.buildingTable: "obra",
+            self.suplierTable: "proveedor",   # Nueva tabla para Supplier
+            self.materialTable: "material"   # Nueva tabla para Material
         }
         
         response = self.supabase.table(sqlTable[table]).select("*").execute()
@@ -94,9 +120,12 @@ class MainWindow(QMainWindow):
         
         # Diccionario que almacena una lista con los objetos a rellenar en base al orden de las columnas en la tabla
         widgetsDict = {
-            self.ui.customerTable: [self.ui.customerName, self.ui.customerLastPaternalName, self.ui.customerLastMaternalName, self.ui.customerAddress, self.ui.customerPhone],
-            self.ui.employeeTable: [self.ui.employeeName, self.ui.employeePaternalLastName, self.ui.employeeMaternalLastName, self.ui.employeeMail,
-                                    self.ui.employeePosition, self.ui.employeeUsername, self.ui.employeePassword, self.ui.employeeBuilding]
+            self.customerTable: [self.customerName, self.customerLastPaternalName, self.customerLastMaternalName, self.customerAddress, self.customerPhone],
+            self.employeeTable: [self.employeeName, self.employeePaternalLastName, self.employeeMaternalLastName, self.employeeMail,
+                                    self.employeePosition, self.employeeUsername, self.employeePassword, self.employeeBuilding],
+            self.suplierTable: [self.suplierName, self.suplierNumber],
+            self.materialTable: [self.materialName, self.materialCant, self.materialProv],
+            self.buildingTable: [self.buildingProyect, self.buildingAddress, self.buildindgDate, self.buildingCustomer]
         }
         widgetList = widgetsDict[table]
         
@@ -117,7 +146,7 @@ class MainWindow(QMainWindow):
         for idx, widget in enumerate(widgetList):
             if isinstance(widget, QLineEdit):
                 widget.setText(data[idx])
-            elif isinstance(widget, QComboBox) and table == self.ui.employeeTable:
+            elif isinstance(widget, QComboBox) and table == self.employeeTable:
                 widget.setCurrentIndex(0 if data[idx] == "Trabajador" else 1)
         
     def getDataFromTable(self, table: QTableWidget):
@@ -140,42 +169,81 @@ class MainWindow(QMainWindow):
         else:
             return
         
+        # Diccionarios de referencia
         tableDict = {
-            self.ui.addCustomer: self.ui.customerTable,
-            self.ui.addEmployee: self.ui.employeeTable
+            self.addCustomer: self.customerTable,
+            self.addEmployee: self.employeeTable,
+            self.addSuplier: self.suplierTable,
+            self.addMaterial: self.materialTable,
+            self.addBuilding: self.buildingTable,
         }
-        
+
         sqlTable = {
-            self.ui.addCustomer: "cliente",
-            self.ui.addEmployee: "empleados"
+            self.addCustomer: "cliente",
+            self.addEmployee: "empleados",
+            self.addSuplier: "proveedor",
+            self.addMaterial: "material",
+            self.addBuilding: "obra",
         }
+
+
         
         table = tableDict[button]
         index = self.getNextIndex(table)
         jsonDict = {
-            self.ui.addCustomer: {"id_cliente": index,
-                                  "nombre": self.ui.customerName.text(),
-                                  "apellido_paterno": self.ui.customerLastPaternalName.text(),
-                                  "apellido_materno": self.ui.customerLastMaternalName.text(),
-                                  "direccion": self.ui.customerAddress.text(),
-                                  "telefono": self.ui.customerPhone.text()},
-            self.ui.addEmployee: {"id_empleados": index,
-                                  "nombre": self.ui.employeeName.text(),
-                                  "apellido_paterno": self.ui.employeePaternalLastName.text(),
-                                  "apellido_materno": self.ui.employeeMaternalLastName.text(),
-                                  "email": self.ui.employeeMail.text(),
-                                  "puesto": self.ui.employeePosition.currentText(),
-                                  "username": self.ui.employeeUsername.text(),
-                                  "password": self.ui.employeePassword.text(),
-                                  "id_obra": self.ui.employeeBuilding.text()}
+            self.addCustomer: {
+                "id_cliente": index,
+                "nombre": self.customerName.text(),
+                "apellido_paterno": self.customerLastPaternalName.text(),
+                "apellido_materno": self.customerLastMaternalName.text(),
+                "direccion": self.customerAddress.text(),
+                "telefono": self.customerPhone.text(),
+            },
+            self.addEmployee: {
+                "id_empleados": index,
+                "nombre": self.employeeName.text(),
+                "apellido_paterno": self.employeePaternalLastName.text(),
+                "apellido_materno": self.employeeMaternalLastName.text(),
+                "email": self.employeeMail.text(),
+                "puesto": self.employeePosition.currentText(),
+                "username": self.employeeUsername.text(),
+                "password": self.employeePassword.text(),
+                "id_obra": self.employeeBuilding.text(),
+            },
+            self.addSuplier: {
+                "id_proveedor": index,
+                "nombre": self.suplierName.text(),
+                "telefono": self.suplierNumber.text(),
+            },
+            self.addMaterial: {
+                "id_material": index,
+                "nombre": self.materialName.text(),
+                "cantidad": self.materialCant.text(),
+                "id_proveedor": self.materialProv.text(),
+            },
+            self.addBuilding: {
+                "id_obra": index,
+                "nombre": self.buildingProyect.text(),
+                "ubicacion": self.buildingAddress.text(),
+                "fecha_inicio": self.buildindgDate.text(),
+                "id_cliente": self.buildingCustomer.text(),
+            }
         }
+        #poner validacion de provedor id en obra
+                
+            
+
         
         rowFormat = {
-            self.ui.addCustomer: [str(index), self.ui.customerName.text(), self.ui.customerLastPaternalName.text(), self.ui.customerLastMaternalName.text(), 
-                                  self.ui.customerAddress.text(), self.ui.customerPhone.text()],
-            self.ui.addEmployee: [str(index), self.ui.employeeName.text(), self.ui.employeePaternalLastName.text(), self.ui.employeeMaternalLastName.text(),
-                                  self.ui.employeeMail.text(), self.ui.employeePosition.currentText(), self.ui.employeeUsername.text(),
-                                  self.ui.employeePassword.text(), self.ui.employeeBuilding.text()]
+            self.addCustomer: [str(index), self.customerName.text(), self.customerLastPaternalName.text(), self.customerLastMaternalName.text(), 
+                                  self.customerAddress.text(), self.customerPhone.text()],
+            self.addEmployee: [str(index), self.employeeName.text(), self.employeePaternalLastName.text(), self.employeeMaternalLastName.text(),
+                                  self.employeeMail.text(), self.employeePosition.currentText(), self.employeeUsername.text(),
+                                  self.employeePassword.text(), self.employeeBuilding.text()],
+            self.addSuplier: [str(index), self.suplierName.text(), self.suplierNumber.text()],
+            self.addMaterial: [str(index), self.materialName.text(), self.materialCant.text(), self.materialProv.text(), ],
+            self.addBuilding: [str(index),  self.buildingProyect.text(), self.buildingAddress.text(), self.buildindgDate.text(), self.buildingCustomer.text()],
+       
         }
         
         self.supabase.table(sqlTable[button]).insert(jsonDict[button]).execute()
@@ -193,55 +261,95 @@ class MainWindow(QMainWindow):
             button = sender
         else:
             return
-        
+
+        # Diccionarios de referencia
         tableDict = {
-            self.ui.updateCustomer: self.ui.customerTable,
-            self.ui.updateEmployee: self.ui.employeeTable
+            self.updateCustomer: self.customerTable,
+            self.updateEmployee: self.employeeTable,
+            self.updateSuplier: self.suplierTable,
+            self.updateMaterial: self.materialTable,
+            self.updateBuilding: self.buildingTable,
         }
-        
+
         sqlTable = {
-            self.ui.updateCustomer: "cliente",
-            self.ui.updateEmployee: "empleados"
+            self.updateCustomer: "cliente",
+            self.updateEmployee: "empleados",
+            self.updateSuplier: "proveedor",
+            self.updateMaterial: "material",
+            self.updateBuilding: "obra",
         }
-        
+
         indexColumn = {
-            self.ui.updateCustomer: "id_cliente",
-            self.ui.updateEmployee: "id_empleados"
+            self.updateCustomer: "id_cliente",
+            self.updateEmployee: "id_empleados",
+            self.updateSuplier: "id_proveedor",
+            self.updateMaterial: "id_material",
+            self.updateBuilding: "id_obra",
         }
-        
-        jsonDict = {
-            self.ui.updateCustomer: {"nombre": self.ui.customerName.text(),
-                                     "apellido_paterno": self.ui.customerLastPaternalName.text(),
-                                     "apellido_materno": self.ui.customerLastMaternalName.text(),
-                                     "direccion": self.ui.customerAddress.text(),
-                                     "telefono": self.ui.customerPhone.text()},
-            self.ui.updateEmployee: {"nombre": self.ui.employeeName.text(),
-                                     "apellido_paterno": self.ui.employeePaternalLastName.text(),
-                                     "apellido_materno": self.ui.employeeMaternalLastName.text(),
-                                     "email": self.ui.employeeMail.text(),
-                                     "puesto": self.ui.employeePosition.currentText(),
-                                     "username": self.ui.employeeUsername.text(),
-                                     "password": self.ui.employeePassword.text(),
-                                     "id_obra": self.ui.employeeBuilding.text()}
-        }
-        
+
+        # Obtener la tabla correspondiente
         table = tableDict[button]
-        row = table.currentRow()
-        index = int(table.item(row, 0).text())
         
-        rowFormat = {
-            self.ui.updateCustomer: [str(index), self.ui.customerName.text(), self.ui.customerLastPaternalName.text(), self.ui.customerLastMaternalName.text(), 
-                                     self.ui.customerAddress.text(), self.ui.customerPhone.text()],
-            self.ui.updateEmployee: [str(index), self.ui.employeeName.text(), self.ui.employeePaternalLastName.text(), self.ui.employeeMaternalLastName.text(),
-                                     self.ui.employeeMail.text(), self.ui.employeePosition.currentText(), self.ui.employeeUsername.text(),
-                                     self.ui.employeePassword.text(), self.ui.employeeBuilding.text()]
+        # Obtener el índice de la fila seleccionada
+        selected_row = table.currentRow()
+        if selected_row == -1:
+            return  # No hay ninguna fila seleccionada
+
+        # Obtener el valor del ID desde la primera columna de la fila seleccionada (columna 0, que está oculta)
+        index = table.item(selected_row, 0).text()
+
+        # Diccionario JSON con los datos a actualizar
+        jsonDict = {
+            self.updateCustomer: {
+                "id_cliente": index,
+                "nombre": self.customerName.text(),
+                "apellido_paterno": self.customerLastPaternalName.text(),
+                "apellido_materno": self.customerLastMaternalName.text(),
+                "direccion": self.customerAddress.text(),
+                "telefono": self.customerPhone.text(),
+            },
+            self.updateEmployee: {
+                "id_empleados": index,
+                "nombre": self.employeeName.text(),
+                "apellido_paterno": self.employeePaternalLastName.text(),
+                "apellido_materno": self.employeeMaternalLastName.text(),
+                "email": self.employeeMail.text(),
+                "puesto": self.employeePosition.currentText(),
+                "username": self.employeeUsername.text(),
+                "password": self.employeePassword.text(),
+                "id_obra": self.employeeBuilding.text(),
+            },
+            self.updateSuplier: {
+                "id_proveedor": index,
+                "nombre": self.suplierName.text(),
+                "telefono": self.suplierNumber.text(),
+            },
+            self.updateMaterial: {
+                "id_material": index,
+                "nombre": self.materialName.text(),
+                "cantidad": self.materialCant.text(),
+                "id_proveedor": self.materialProv.text(),
+            },
+            self.updateBuilding: {
+                "id_obra": index,
+                "nombre": self.buildingProyect.text(),
+                "ubicacion": self.buildingAddress.text(),
+                "fecha_inicio": self.buildindgDate.text(),
+                "id_cliente": self.buildingCustomer.text(),
+            }
         }
-        
+
+        # Realizar la actualización en la base de datos
         self.supabase.table(sqlTable[button]).update(jsonDict[button]).eq(indexColumn[button], index).execute()
         
-        for col, item in enumerate(rowFormat[button]):
-            self.setCellItem(table, row, col, QTableWidgetItem(item))
+
+
+        # Actualizar la tabla con los nuevos datos
+        for col, item in enumerate(jsonDict[button].values()):
+            self.setCellItem(table, selected_row, col, QTableWidgetItem(str(item)))
+
         table.resizeColumnsToContents()
+
     
     def deleteData(self):
         sender = self.sender()
@@ -251,18 +359,28 @@ class MainWindow(QMainWindow):
             return
         
         tableDict = {
-            self.ui.deleteCustomer: self.ui.customerTable,
-            self.ui.deleteEmployee: self.ui.employeeTable
+            self.deleteCustomer: self.customerTable,
+            self.deleteEmployee: self.employeeTable,
+            self.deleteSuplier: self.suplierTable,
+            self.deleteMaterial: self.materialTable,
+            self.deleteBuilding: self.buildingTable,
+
         }
-        
+
         sqlTable = {
-            self.ui.deleteCustomer: "cliente",
-            self.ui.deleteEmployee: "empleados"
+            self.deleteCustomer: "cliente",
+            self.deleteEmployee: "empleados",
+            self.deleteSuplier: "proveedor",
+            self.deleteMaterial: "material",
+            self.deleteBuilding: "obra",
         }
-        
+
         indexColumn = {
-            self.ui.deleteCustomer: "id_cliente",
-            self.ui.deleteEmployee: "id_empleados"
+            self.deleteCustomer: "id_cliente",
+            self.deleteEmployee: "id_empleados",
+            self.deleteSuplier: "id_proveedor",
+            self.deleteMaterial: "id_material",
+            self.deleteBuilding: "id_obra",
         }
         
         table = tableDict[button]
@@ -274,15 +392,23 @@ class MainWindow(QMainWindow):
     
     def getNextIndex(self, table: QTableWidget):
         sqlTable = {
-            self.ui.customerTable: "cliente",
-            self.ui.employeeTable: "empleados"
+            self.customerTable: "cliente",
+            self.employeeTable: "empleados",
+            self.buildingTable: "obra",
+            self.suplierTable: "proveedor",   
+            self.materialTable: "material"   
         }
-        
+
+
         indexColumn = {
-            self.ui.customerTable: "id_cliente",
-            self.ui.employeeTable: "id_empleados"
+            self.customerTable: "id_cliente",
+            self.employeeTable: "id_empleados",
+            self.buildingTable: "id_obra",
+            self.suplierTable: "id_proveedor", 
+            self.materialTable: "id_material"
         }
-        
+
+
         # Esto es igual a "SELECT {indexColumn[table]} FROM {sqlTabe[table]} ORDER BY {indexColumn[table]} DESC LIMIT 1;"
         response = self.supabase.table(sqlTable[table]).select(indexColumn[table]).order(indexColumn[table], desc=True).limit(1).execute()
 
