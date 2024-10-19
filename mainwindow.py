@@ -3,6 +3,7 @@ from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 from supabase import create_client, Client
+import pywhatkit 
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -247,6 +248,22 @@ class MainWindow(QMainWindow):
         }
         
         self.supabase.table(sqlTable[button]).insert(jsonDict[button]).execute()
+        # Si se está agregando un material, enviar el mensaje
+        if button == self.addMaterial:
+            id_proveedor = self.materialProv.text()
+            # Obtener el número de teléfono del proveedor desde Supabase
+            response = self.supabase.table("proveedor").select("telefono").eq("id_proveedor", id_proveedor).execute()
+            proveedor_data = response.data
+            if proveedor_data:
+                numero = f"+52 {proveedor_data[0]['telefono']}"
+                mensaje = f"Necesito {self.materialCant.text()} de {self.materialName.text()}"
+                
+                try:
+                    # Enviar el mensaje
+                    pywhatkit.sendwhatmsg_instantly(numero, mensaje, tab_close=True)
+                    print("Mensaje Enviado")
+                except Exception as e:
+                    print(f"Ocurrió un error al enviar el mensaje: {e}")
         
         row = table.rowCount()
         table.insertRow(row)

@@ -127,7 +127,7 @@ QLineEdit{
          <bool>true</bool>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">leftBarButtonGroup</string>
@@ -318,6 +318,9 @@ QLineEdit{
           <height>64</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>ForbiddenCursor</cursorShape>
+        </property>
         <property name="toolTip">
          <string>Citas</string>
         </property>
@@ -331,7 +334,10 @@ QLineEdit{
           <height>64</height>
          </size>
         </property>
-        <property name="checkable">
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="default">
          <bool>true</bool>
         </property>
         <attribute name="buttonGroup">
@@ -358,6 +364,9 @@ QLineEdit{
           <width>64</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>ForbiddenCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>Pedidos</string>
