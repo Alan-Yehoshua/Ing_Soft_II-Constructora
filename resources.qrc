@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>Icon/businessman-32.ico</file>
+    <file>Icon/collaborator-32.ico</file>
+    <file>Icon/date-to-32.ico</file>
+    <file>Icon/error-6-32.ico</file>
+    <file>Icon/lightning-bolt-48.ico</file>
+    <file>Icon/lightning-bolt-256.ico</file>
+    <file>Icon/month-view-32.ico</file>
+    <file>Icon/new-post-32.ico</file>
+    <file>Icon/organization-32.ico</file>
+    <file>Icon/search-13-32.ico</file>
+    <file>Icon/user-32.ico</file>
+  </qresource>
+</RCC>
