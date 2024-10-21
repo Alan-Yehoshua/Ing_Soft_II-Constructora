@@ -64,22 +64,34 @@ class MainWindow(QMainWindow):
             3: self.materialTable,
             4: self.buildingTable
         }
-
         
-        # Bloqueo tempral debido a la cantidad de paginas en self.stackedWidget
-        if index > 1:
-            index = 1
+        # Limpia los widgets cuando se cambia de pestaña
+        widgetsDict = {
+            0: [self.customerName, self.customerLastPaternalName, self.customerLastMaternalName, self.customerAddress, self.customerPhone],
+            1: [self.employeeName, self.employeePaternalLastName, self.employeeMaternalLastName, self.employeeMail,
+                self.employeePosition, self.employeeUsername, self.employeePassword, self.employeeBuilding],
+            2: [self.suplierName, self.suplierNumber],
+            3: [self.materialName, self.materialCant, self.materialProv],
+            4: [self.buildingProyect, self.buildingAddress, self.buildindgDate, self.buildingCustomer]
+        }
         
-        # Carga los datos a la tabla a trabajar
+        widgetList = widgetsDict.get(index, [])
+        for widget in widgetList:
+            if isinstance(widget, QLineEdit):
+                widget.setText("")
+            elif isinstance(widget, QComboBox):
+                widget.setCurrentIndex(0)
+        
+        # Carga los datos a la tabla correspondiente
         self.loadData(indexDict[index])
         
-        # Limpia la seleccion de las demás tablas
-        for idx, table in enumerate([self.customerTable, self.employeeTable]):
-            if idx == index: # Si los indices coinciden, se salta la iteración
+        # Limpia la selección de las demás tablas
+        for idx, table in enumerate([self.customerTable, self.employeeTable, self.suplierTable, self.materialTable, self.buildingTable]):
+            if idx == index:  # Si los índices coinciden, se salta la iteración
                 continue
-            
             table.setSortingEnabled(False)
             table.clearSelection()
+
                 
     def loadData(self, table: QTableWidget):
         # Diccionario que almacena la tabla a consultar con supabase
