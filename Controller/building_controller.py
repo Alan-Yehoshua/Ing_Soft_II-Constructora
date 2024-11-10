@@ -32,6 +32,7 @@ class ObraController:
         self.view.buildingTable.setRowCount(0)  # Limpiar tabla antes de cargar datos
         clientes = self.model.obtener_clientes()
         clienteBox = [item['nombre'] for item in clientes]
+        self.view.buildingCustomer.clear()
         self.view.buildingCustomer.addItems(clienteBox)
         for row, data in enumerate(obras):
             self.view.buildingTable.insertRow(row)

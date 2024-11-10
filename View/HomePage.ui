@@ -1810,14 +1810,7 @@ QLineEdit{
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="materialProv">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
+            <widget class="QComboBox" name="materialProv"/>
            </item>
           </layout>
          </item>
@@ -1923,7 +1916,7 @@ QLineEdit{
           <height>531</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,2">
+        <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0">
          <property name="spacing">
           <number>12</number>
          </property>
@@ -1932,6 +1925,9 @@ QLineEdit{
          </property>
          <property name="leftMargin">
           <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
          </property>
          <property name="rightMargin">
           <number>6</number>
@@ -1983,30 +1979,10 @@ QLineEdit{
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="dateDates">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_26">
              <property name="text">
               <string>Cliente</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="dateCustomer">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>100</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
              </property>
             </widget>
            </item>
@@ -2094,6 +2070,12 @@ QLineEdit{
               </size>
              </property>
             </spacer>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDateEdit" name="dateDates"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="dateCustomer"/>
            </item>
           </layout>
          </item>
@@ -2190,96 +2172,221 @@ QLineEdit{
        </widget>
       </widget>
       <widget class="QWidget" name="page_Search">
-       <widget class="QWidget" name="layoutWidget_5">
+       <widget class="QWidget" name="layoutWidget_6">
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-10</y>
+          <y>0</y>
           <width>991</width>
           <height>531</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0">
          <property name="spacing">
           <number>12</number>
          </property>
          <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
+          <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
          <property name="leftMargin">
           <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
          </property>
          <property name="rightMargin">
           <number>6</number>
          </property>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <property name="spacing">
-            <number>20</number>
-           </property>
+          <layout class="QFormLayout" name="formLayout_8">
            <property name="sizeConstraint">
-            <enum>QLayout::SetMaximumSize</enum>
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
+           <property name="labelAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="formAlignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="horizontalSpacing">
+            <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>15</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>10</number>
            </property>
-           <property name="rightMargin">
-            <number>5</number>
-           </property>
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLineEdit" name="searchBuilding">
-             <property name="enabled">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="toSearch">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maxLength">
+              <number>20</number>
+             </property>
+             <property name="frame">
               <bool>true</bool>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>525</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>525</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::ActionsContextMenu</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
-             <property name="dragEnabled">
-              <bool>false</bool>
-             </property>
              <property name="placeholderText">
-              <string>Cliente: XXXXX</string>
+              <string>Buscar...</string>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QColumnView" name="buildingView">
-             <property name="cursor" stdset="0">
-              <cursorShape>ArrowCursor</cursorShape>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="Filter">
+             <item>
+              <property name="text">
+               <string>citas</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>empleados</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>material</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>cliente</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>proveedor</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mensajes_enviados</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>obra</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="Search">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
              </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	color: #2456ee;
+}</string>
+             </property>
+             <property name="text">
+              <string>Buscar</string>
              </property>
             </widget>
+           </item>
+           <item row="3" column="1">
+            <spacer name="verticalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="searchTable">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">    QHeaderView::section {
+        background-color: #0F2A45;   /* Fondo del encabezado */
+        color: white;                /* Color del texto */
+        border: 1px solid #2D5986;   /* Bordes del encabezado */
+		padding: 2px;
+    }
+
+    QTableWidget::item {
+        border: 1px solid #2D5986;   /* Bordes de las celdas */
+        padding: 2px;                /* Espaciado dentro de las celdas */
+    }
+
+	QTableWidget::item:alternate{
+	    background-color: #0B4B6C;
+	}
+
+    QTableWidget::item:selected {
+		color: black; /*Color del texto*/
+        background-color: #82ABD5;   /* Fondo cuando se selecciona */
+    }
+
+    QTableWidget {
+        border: 1px solid #031A31;   /* Bordes de la tabla */
+    }
+
+    QScrollBar:vertical {
+        background: #000000;
+        width: 16px;
+    }
+    
+    QScrollBar::handle:vertical {
+        background: #00796b;
+        min-height: 20px;
+	}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="textElideMode">
+            <enum>Qt::ElideRight</enum>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </widget>
