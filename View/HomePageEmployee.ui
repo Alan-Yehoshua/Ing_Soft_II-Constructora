@@ -142,6 +142,9 @@ QLineEdit{
       </item>
       <item>
        <widget class="QPushButton" name="employeeButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>64</width>
@@ -227,6 +230,9 @@ QLineEdit{
       </item>
       <item>
        <widget class="QPushButton" name="buildingButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>32</horstretch>
@@ -244,9 +250,6 @@ QLineEdit{
           <width>64</width>
           <height>64</height>
          </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>Obras</string>
@@ -315,6 +318,9 @@ QLineEdit{
       </item>
       <item>
        <widget class="QPushButton" name="dateButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>32</horstretch>
@@ -334,7 +340,7 @@ QLineEdit{
          </size>
         </property>
         <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
+         <cursorShape>ArrowCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>Citas</string>
@@ -424,11 +430,8 @@ QLineEdit{
     </item>
     <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_Customer">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -575,6 +578,9 @@ QLineEdit{
             </item>
             <item row="6" column="1">
              <widget class="QPushButton" name="deleteCustomer">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -587,7 +593,7 @@ QLineEdit{
                </font>
               </property>
               <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
+               <cursorShape>ForbiddenCursor</cursorShape>
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton {
@@ -1242,6 +1248,9 @@ QLineEdit{
            </item>
            <item row="3" column="1">
             <widget class="QPushButton" name="deleteSuplier">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1254,7 +1263,7 @@ QLineEdit{
               </font>
              </property>
              <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
+              <cursorShape>ForbiddenCursor</cursorShape>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
@@ -2240,9 +2249,6 @@ QLineEdit{
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="cursor">
-              <cursorShape>IBeamCursor</cursorShape>
-             </property>
              <property name="maxLength">
               <number>20</number>
              </property>
@@ -2253,15 +2259,12 @@ QLineEdit{
               <set>Qt::AlignCenter</set>
              </property>
              <property name="placeholderText">
-              <string>Buscar...(Nombre)</string>
+              <string>Buscar...</string>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
             <widget class="QComboBox" name="Filter">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
              <item>
               <property name="text">
                <string>citas</string>
