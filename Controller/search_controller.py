@@ -21,18 +21,31 @@ class BusquedaController:
     def set_table_headers(self):
         headers = []
         if self.active_filter == "cliente":
+            self.view.toSearch.setPlaceholderText("Nombre")
             headers = ["ID Cliente", "Nombre", "ApellidoP", "ApellidoM", "Direccion", "Telefono"]
+        
         elif self.active_filter == "citas":
+            self.view.toSearch.setPlaceholderText("Descripcion")
             headers = ["ID Cita", "Descripción", "Fecha", "ID Cliente"]
+        
         elif self.active_filter == "material":
+            self.view.toSearch.setPlaceholderText("Nombre")
             headers = ["ID Material", "Nombre", "Cantidad", "ID Proveedor"]
+        
         elif self.active_filter == "proveedor":
+            self.view.toSearch.setPlaceholderText("Nombre")
             headers = ["ID Proveedor", "Nombre", "Teléfono"]
+        
         elif self.active_filter == "mensajes_enviados":
-            headers = ["ID Proveedor", "Origen", "Destino", "Fecha", "Hora", "Mensaje"]
+            self.view.toSearch.setPlaceholderText("Remitente")
+            headers = ["ID", "Origen", "Destino", "Fecha_Hora", "Mensaje"]
+        
         elif self.active_filter == "obra":
+            self.view.toSearch.setPlaceholderText("Nombre")
             headers = ["ID Obra", "Nombre", "Dirección", "Fecha de Inicio", "ID Cliente"]
+        
         elif self.active_filter == "empleados":
+            self.view.toSearch.setPlaceholderText("Nombre")
             headers = ["ID Empleado", "Nombre", "ApellidoP", "ApellidoM", "Email", "Puesto", "Usuario", "Contraseña", "Id_obra"]
 
         self.view.searchTable.setColumnCount(len(headers))
@@ -53,6 +66,8 @@ class BusquedaController:
             data = self.model.obtener_Obras(self.view.toSearch.text())
         elif self.active_filter == "empleados":
             data = self.model.obtener_empleados(self.view.toSearch.text())
+        elif self.active_filter == "mensajes_enviados":
+            data = self.model.obtener_mensajes(self.view.toSearch.text())
             
         for row_idx, row_data in enumerate(data):
             self.view.searchTable.insertRow(row_idx)
@@ -62,3 +77,6 @@ class BusquedaController:
                     item = str(item)
                 self.view.searchTable.setItem(row_idx, col_idx, QTableWidgetItem(item))
         self.view.Filter.setEnabled(True)
+        
+        self.view.searchTable.setSortingEnabled(True)
+        self.view.searchTable.resizeColumnsToContents()

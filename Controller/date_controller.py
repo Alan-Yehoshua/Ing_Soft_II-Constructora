@@ -4,13 +4,13 @@ from PyQt5 import QtCore
 from Model.date_model import CitaModel
 
 from datetime import datetime
-
 import pywhatkit as pw
 
 class CitaController:
-    def __init__(self, main_window):
+    def __init__(self, main_window, rem):
         self.model = CitaModel()
         self.view = main_window
+        self.rem = rem
 
         # Conectar botones/señales
         self.view.addDate.clicked.connect(self.add_date)
@@ -26,13 +26,22 @@ class CitaController:
             "id_cliente": self.model.obtener_id_cliente(self.view.dateCustomer.currentText())
         }
         self.model.agregar_cita(date_data)
+        
+        #MANDAR MENSAJE Y AÑADIR MENSAJE A LA BD
         numero = f"+52 {self.model.obtener_tel_cliente(self.view.dateCustomer.currentText())}"
         mensaje = f"La cita para {self.view.dateDescription.text()} con fecha del {fecha_cita_str}"
+        fecha_y_hora_actuales = datetime.now()
+        fecha_y_hora = fecha_y_hora_actuales.strftime('%Y/%m/%d %H:%M:%S') 
+        msg_data = {
+            "remitente": self.rem,
+            "destinatario": self.view.dateCustomer.currentText(),
+            "fecha": fecha_y_hora,
+            "mensaje": mensaje
+        }
         try:
-            # Enviar el mensaje
-
             pw.sendwhatmsg_instantly(numero, mensaje, tab_close=True)
             print("Mensaje Enviado")
+            self.model.agregar_mensaje(msg_data)
         except Exception as e:
             print(f"Ocurrió un error al enviar el mensaje: {e}")
         self.loadData()

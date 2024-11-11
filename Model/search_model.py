@@ -33,3 +33,8 @@ class BusquedaModel:
         response = self.supabase.table("obra").\
         select("*").like("nombre", f"{n}%").execute()
         return response.data
+    
+    def obtener_mensajes(self, n):
+        response = self.supabase.table("mensajes_enviados").\
+        select("*").like("remitente", f"{n}%").execute()
+        return response.data

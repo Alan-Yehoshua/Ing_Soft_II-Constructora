@@ -28,3 +28,6 @@ class CitaModel:
     def obtener_tel_cliente(self, name):
         response = (self.supabase.table("cliente").select("telefono").eq("nombre", name).execute())
         return response.data[0]["telefono"]
+    
+    def agregar_mensaje(self, msg_data):
+        self.supabase.table("mensajes_enviados").insert(msg_data).execute()

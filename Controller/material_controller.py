@@ -2,12 +2,14 @@ from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget
 
 from Model.material_model import MaterialModel
 
+from datetime import datetime
 import pywhatkit as pw
 
 class MaterialController:
-    def __init__(self, main_window):
+    def __init__(self, main_window, rem):
         self.model = MaterialModel()
         self.view = main_window
+        self.rem = rem
 
         # Conectar botones/señales
         self.view.addMaterial.clicked.connect(self.add_material)
@@ -22,12 +24,23 @@ class MaterialController:
             "id_proveedor": self.model.obtener_id_proveedor(self.view.materialProv.currentText())
         }
         self.model.agregar_material(material_data)
+        
+        #ENVIA MENSAJE Y AÑADE EL MENSAJE PARA EL BD
         numero = f"+52 {self.model.obtener_tel_proveedor(self.view.materialProv.currentText())}"
         mensaje = f"Necesito {self.view.materialCant.text()} de {self.view.materialName.text()}"
+        fecha_y_hora_actuales = datetime.now()
+        fecha_y_hora = fecha_y_hora_actuales.strftime('%Y/%m/%d %H:%M:%S')
+        msg_data = {
+            "remitente": self.rem,
+            "destinatario": self.view.materialProv.currentText(),
+            "fecha": fecha_y_hora,
+            "mensaje": mensaje
+        }
         try:
             # Enviar el mensaje
             pw.sendwhatmsg_instantly(numero, mensaje, tab_close=True)
             print("Mensaje Enviado")
+            self.model.agregar_mensaje(msg_data)
         except Exception as e:
             print(f"Ocurrió un error al enviar el mensaje: {e}")
         self.loadData()

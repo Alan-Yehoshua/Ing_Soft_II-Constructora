@@ -13,7 +13,7 @@ from Controller.search_controller import BusquedaController
 from datetime import datetime
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, rem):
         super().__init__()
         loadUi("C:/Python_code/Ing_Soft_II_Constrcutora/View/HomePage.ui", self)
         #LLAMADA A LOS CONTROLADORES
@@ -21,8 +21,8 @@ class MainWindow(QMainWindow):
         building_controller = ObraController(self)
         employe_controller = EmpleadoController(self)
         suplier_controller = ProveedorController(self)
-        material_controller = MaterialController(self)
-        date_controller = CitaController(self);
+        material_controller = MaterialController(self, rem)
+        date_controller = CitaController(self, rem);
         search_controller = BusquedaController(self)
         
         self.controllerCliente = customer_controller

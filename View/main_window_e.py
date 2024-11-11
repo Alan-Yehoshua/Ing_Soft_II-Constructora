@@ -7,13 +7,13 @@ from Controller.material_controller import MaterialController
 from Controller.search_controller import BusquedaController
 
 class MainWindowE(QMainWindow):
-    def __init__(self):
+    def __init__(self, rem):
         super().__init__()
         loadUi("C:/Python_code/Ing_Soft_II_Constrcutora/View/HomePageEmployee.ui", self)
         #LLAMADA A LOS CONTROLADORES
         customer_controller = ClienteController(self)
         suplier_controller = ProveedorController(self)
-        material_controller = MaterialController(self)
+        material_controller = MaterialController(self, rem)
         search_controller = BusquedaController(self)
         
         self.controllerCliente = customer_controller
